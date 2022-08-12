@@ -31,43 +31,23 @@ toggler.addEventListener("click", modeToggler);
 /**
  * =================================
  *  mouse on card
+ * 	credit codepin (https://codepen.io/ravisridhar55/pen/poeyJKQ?editors=0010)
  * =================================
  * */
 
 const card = document.querySelector(".card");
+const boxRect = card.getBoundingClientRect();
 
-card.addEventListener("mouseover", (e) => {
-	const minX = 100,
-		maxX = 640;
-	const minY = 100,
-		maxY = 630;
-	// top left
-	if (e.x > minX && e.x < maxX / 2 && e.y > minY && e.y < maxY / 2) {
-		card.classList.add("top-left");
-	} else {
-		card.classList.remove("top-left");
-		card.classList.add("reset");
-	}
-	// top right
-	if (e.x < maxX && e.x > maxX / 2 && e.y > minY && e.y < maxY / 2) {
-		card.classList.add("top-right");
-	} else {
-		card.classList.remove("top-right");
-		card.classList.add("reset");
-	}
-	// bottom left
-	if (e.x > minX && e.x < maxX / 2 && e.y < maxY && e.y > maxY / 2) {
-		card.classList.add("bottom-left");
-	} else {
-		card.classList.remove("bottom-left");
-		card.classList.add("reset");
-	}
-	// bottom right
-	if (e.x < maxX && e.x > maxX / 2 && e.y < maxY && e.y > maxY / 2) {
-		card.classList.add("bottom-right");
-	} else {
-		card.classList.remove("bottom-right");
-		card.classList.add("reset");
-	}
-	// console.log(e);
+card.addEventListener("mousemove", (e) => {
+	const xPosition = (e.clientX - boxRect.left) / boxRect.width;
+	const yPosition = (e.clientY - boxRect.top) / boxRect.height - 0.2;
+	const xOffset = -(xPosition - 0.2);
+	const dxNorm = Math.min(Math.max(xOffset, -0.2), 0.2);
+	card.style.transform = `perspective(1000px) rotateY(${
+		dxNorm * 45
+	}deg) rotateX(${yPosition * 45}deg)`;
+});
+
+card.addEventListener("mouseleave", () => {
+	card.style.transform = "none";
 });
